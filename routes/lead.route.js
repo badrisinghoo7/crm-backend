@@ -23,9 +23,7 @@ leadRouter.get("/all", async (req, res) => {
     let limit = Number(req.query.limit) || 10;
     let skip = (page - 1) * limit;
 
-    const leads = await LeadModel.find({})
-      .skip(skip)
-      .limit(limit);
+    const leads = await LeadModel.find({}).skip(skip).limit(limit);
 
     const totalLeads = await LeadModel.countDocuments();
     const totalPages = Math.ceil(totalLeads / limit);
@@ -40,7 +38,6 @@ leadRouter.get("/all", async (req, res) => {
     res.status(500).send({ msg: error.message });
   }
 });
-
 
 // For seaching the data
 
@@ -80,7 +77,7 @@ leadRouter.get("/sort", async (req, res) => {
 
 //for updating the data
 
-leadRouter.patch('/update/:id', async (req, res) => {
+leadRouter.patch("/update/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const updates = req.body;
@@ -90,7 +87,7 @@ leadRouter.patch('/update/:id', async (req, res) => {
       runValidators: true,
     });
     if (!lead) {
-      return res.status(404).send({ message: 'Lead not found' });
+      return res.status(404).send({ message: "Lead not found" });
     }
 
     res.status(200).send(lead);
@@ -102,16 +99,13 @@ leadRouter.patch('/update/:id', async (req, res) => {
 // for deleting the data
 
 leadRouter.delete("/delete/:id", async (req, res) => {
-
   try {
-    const{id} = req.params
+    const { id } = req.params;
     const result = await LeadModel.findByIdAndDelete(id);
-    res.status(200).send({message:result})
+    res.status(200).send({ message: result });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-})
-
-
+});
 
 module.exports = { leadRouter };
